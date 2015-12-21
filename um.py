@@ -15,13 +15,14 @@ week = now.isocalendar()[1] - 1
 year_input = input('Hvilke aar skal generes? [{}] '.format(year))
 week_input = input('Hvilke uke skal generes? [{}] '.format(week))
 
-if not year_input:
-    year_input = year
+if year_input:
+    year = year_input
 
-if not week_input:
-    week_input = week
+if week_input:
+    week = week_input
 
 print('Folgende teamledere vil faa rapport:')
+print('For uke {} i aar {}'.format(week, year))
 for teamleader in consultants.teamleaders:
     print(teamleader.number)
     #print(teamleader.number, teamleader.first_name, teamleader.last_name)
