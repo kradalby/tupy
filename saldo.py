@@ -23,7 +23,7 @@ if not week_input:
 
 print('Folgende teamledere vil faa rapport:')
 for teamleader in consultants.teamleaders:
-    print(teamleader.number)
+    print(teamleader.number, teamleader.email)
     #print(teamleader.number, teamleader.first_name, teamleader.last_name)
 
 print('Hvis dette ikke ser korrekt ut, kjor pgm 1-6-5 og 1-6-6')
@@ -32,11 +32,11 @@ teamleader_input = input('Ser dette korrekt ut? [ja/nei] ')
 if teamleader_input != 'ja':
     sys.exit(1)
 
-files = tupy.generate_um_analyses(year, week, consultants.teams)
+files = tupy.generate_saldo_lists(year, week, consultants.teams)
 
 mailtext = '''Hei
 
-Her har du ukens Teamleder Analyse:)
+Her har du ukens saldoliste:)
 
 Dette er en automatisk generert mail som det er mulig og svare på om avsender er lager@klatrerosen.no!
 
@@ -51,9 +51,10 @@ for team, path in files.items():
     mail.send_mail(
         [consultants.get_teamleader_for_team(team).email],
         #['kradalby@klatrerosen.no'],
-        'Teamleder analyse for uke {}'.format(week),
+        'Saldoliste for uke {}'.format(week),
         mailtext,
         files=[path]
     )
+
 
 input()

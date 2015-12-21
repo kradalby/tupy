@@ -1,10 +1,12 @@
 import configparser
+import os
 
+PATH = os.path.dirname(os.path.abspath(__file__))
 
 class Consultants:
     def __init__(self):
         config = configparser.ConfigParser()
-        config.read('config.ini')
+        config.read(os.path.join(PATH, 'config.ini'))
         self.all = self.parse_consultant_file(config['path']['consultants'])
 
     def parse_consultant_file(self, path):

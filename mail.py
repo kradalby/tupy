@@ -5,12 +5,15 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.utils import COMMASPACE, formatdate
 import configparser
+import os
+
+PATH = os.path.dirname(os.path.abspath(__file__))
 
 def send_mail(send_to, subject, text, files=None):
     assert isinstance(send_to, list)
 
     config = configparser.ConfigParser()
-    config.read('config.ini')
+    config.read(os.path.join(PATH, 'config.ini'))
 
     send_from = config['mail']['from']
     server = config['mail']['smtp']

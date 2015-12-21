@@ -3,11 +3,14 @@ from pywinauto import timings
 import pywinauto
 import time
 import configparser
+import os
+
+PATH = os.path.dirname(os.path.abspath(__file__))
 
 class Tupy:
     def __init__(self):
         config = configparser.ConfigParser()
-        config.read('config.ini')
+        config.read(os.path.join(PATH, 'config.ini'))
         self.base_path = config['path']['teamleder']
         self.app = None
 
@@ -94,27 +97,36 @@ class Tupy:
             self.start()
         self.go_to_program([3, 5])
         self.configure_printer('Landscape')
-        self.app.window_().ChildWindow().TypeKeys('{ENTER}')
-        self.app.window_().ChildWindow().TypeKeys('{}00{}{}99{}'.format(team, '{TAB}', team, '{ENTER}'))
+        time.sleep(2)
+        windows = self.app.windows_()
+        if windows[0].Class() == 'AcucobolWClass':
+            print(windows[0].Texts())
+            windows[0].TypeKeys('{ENTER}')
+
         path = r'{}\{}\{}\saldoliste\uke{}'.format(
             self.base_path,
             team,
             year,
             week
         )
-        self.handle_lock()
         self.save_pdf(path)
+        time.sleep(8)
+
+        windows = self.app.windows_()
+        if windows[0].Class() == 'AcucobolWClass':
+            windows[0].TypeKeys('{}00'.format(team))
+            windows[0].TypeKeys('{ENTER}')
+            windows[0].TypeKeys('{}99'.format(team))
+            windows[0].TypeKeys('{ENTER}')
+
         self.stop()
+
+        print('Genererer liste for {}'.format(team))
         return path + '.pdf'
 
     def generate_saldo_lists(self, year, week, teams):
         files = {}
 
         for team in teams:
-            files[team] = self.generate_um_analyses_for_team(year, week, team)
+            files[team] = self.generate_saldo_list_for_team(year, week, team)
         return files
-
-
-#app['Bullzip PDF Printer - Create File']['TextBoxU'].SetText(r'C:\Users\kradalby\Desktop\test.pdf')
-#app['Bullzip PDF Printer - Create File']['Open the document after creation'].UnCheck()
-#app['Bullzip PDF Printer - Create File']['Save'].Click()
