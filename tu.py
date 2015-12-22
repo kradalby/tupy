@@ -45,6 +45,7 @@ class Tupy:
         self.app['Tilpas Printer']['Ok'].Click()
 
     def save_pdf(self, path):
+        time.sleep(3)
         self.app['Save Print Output As']['Edit'].SetText(path)
         self.app['Save Print Output As']['Save'].Click()
 
@@ -97,7 +98,7 @@ class Tupy:
             self.start()
         self.go_to_program([3, 5])
         self.configure_printer('Landscape')
-        time.sleep(2)
+        time.sleep(3)
         windows = self.app.windows_()
         if windows[0].Class() == 'AcucobolWClass':
             print(windows[0].Texts())
@@ -110,7 +111,7 @@ class Tupy:
             week
         )
         self.save_pdf(path)
-        time.sleep(8)
+        time.sleep(9)
 
         windows = self.app.windows_()
         if windows[0].Class() == 'AcucobolWClass':
