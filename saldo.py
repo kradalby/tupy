@@ -25,7 +25,7 @@ if week_input:
 print('Folgende teamledere vil faa rapport:')
 print('For uke {} i aar {}'.format(week, year))
 for teamleader in consultants.teamleaders:
-    print(teamleader.number, teamleader.email)
+    print(teamleader)
     #print(teamleader.number, teamleader.first_name, teamleader.last_name)
 
 print('Hvis dette ikke ser korrekt ut, kjor pgm 1-6-5 og 1-6-6')
@@ -52,11 +52,10 @@ for team, path in files.items():
     print('Sending mail to {}'.format(team))
     mail.send_mail(
         [consultants.get_teamleader_for_team(team).email],
-        #['kradalby@klatrerosen.no'],
         'Saldoliste for uke {}'.format(week),
         mailtext,
         files=[path]
     )
 
 
-input()
+input('Ferdig, trykk en tast for aa avslutte, og trykk deretter krysset')

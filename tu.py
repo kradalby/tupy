@@ -38,6 +38,7 @@ class Tupy:
             return False
 
     def configure_printer(self, orientation):
+        time.sleep(2)
         self.app['Tilpas Printer']['Setup...'].Click()
         self.app['Print Setup']['ComboBox'].Select('Microsoft Print to PDF')
         self.app['Print Setup'][orientation].Click()
@@ -64,6 +65,21 @@ class Tupy:
             self.app['T01li']['Edit'].SetText('{},0'.format(program))
             self.app['T01li'].TypeKeys('{ENTER}')
 
+
+    def create_path(self, list_type, year, week, team):
+        path = r'{}\{}\{}\{}\uke{}'.format(
+            self.base_path,
+            team,
+            year,
+            list_type,
+            week
+        )
+        return path
+
+    def delete_file_if_exists(self, file):
+        if os.path.isfile(file):
+            os.remove(file)
+
     def generate_um_analyses_for_team(self, year, week, team):
         if not self.start():
             self.stop()
@@ -74,12 +90,7 @@ class Tupy:
         self.app['UM-analyse']['Printer'].Click()
         self.configure_printer('Landscape')
         self.app['UM-analyse']['OK'].Click()
-        path = r'{}\{}\{}\weekly\uke{}'.format(
-            self.base_path,
-            team,
-            year,
-            week
-        )
+        path = self.create_path('weekly', year, week, team)
         self.handle_lock()
         self.save_pdf(path)
         self.stop()
@@ -87,6 +98,10 @@ class Tupy:
 
     def generate_um_analyses(self, year, week, teams):
         files = {}
+
+        for team in teams:
+            path = self.create_path('weekly', year, week, team) + '.pdf'
+            self.delete_file_if_exists(path)
 
         for team in teams:
             files[team] = self.generate_um_analyses_for_team(year, week, team)
@@ -104,12 +119,7 @@ class Tupy:
             print(windows[0].Texts())
             windows[0].TypeKeys('{ENTER}')
 
-        path = r'{}\{}\{}\saldoliste\uke{}'.format(
-            self.base_path,
-            team,
-            year,
-            week
-        )
+        path = self.create_path('saldoliste', year, week, team)
         self.save_pdf(path)
         time.sleep(9)
 
@@ -127,6 +137,10 @@ class Tupy:
 
     def generate_saldo_lists(self, year, week, teams):
         files = {}
+
+        for team in teams:
+            path = self.create_path('saldoliste', year, week, team) + '.pdf'
+            self.delete_file_if_exists(path)
 
         for team in teams:
             files[team] = self.generate_saldo_list_for_team(year, week, team)

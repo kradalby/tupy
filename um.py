@@ -24,8 +24,7 @@ if week_input:
 print('Folgende teamledere vil faa rapport:')
 print('For uke {} i aar {}'.format(week, year))
 for teamleader in consultants.teamleaders:
-    print(teamleader.number)
-    #print(teamleader.number, teamleader.first_name, teamleader.last_name)
+    print(teamleader)
 
 print('Hvis dette ikke ser korrekt ut, kjor pgm 1-6-5 og 1-6-6')
 teamleader_input = input('Ser dette korrekt ut? [ja/nei] ')
@@ -57,4 +56,4 @@ for team, path in files.items():
         files=[path]
     )
 
-input()
+input('Ferdig, trykk en tast for aa avslutte, og trykk deretter krysset')

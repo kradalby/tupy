@@ -26,10 +26,10 @@ class Consultants:
                     number=c[3],
                     position=c[4],
                     y=c[5],
-                    #first_name=bytes(c[6], 'ibm775').decode('utf-8'),
-                    #last_name=bytes(c[7], 'ibm775').decode('utf-8'),
-                    first_name=c[6],
-                    last_name=c[7],
+                    first_name=c[6].encode('ascii', errors='ignore').decode('utf-8'),
+                    last_name=c[7].encode('ascii', errors='ignore').decode('utf-8'),
+                    #first_name=c[6],
+                    #last_name=c[7],
                     address=c[8],
                     zip_code=c[9],
                     town=c[10],
@@ -44,7 +44,7 @@ class Consultants:
             return consultant_objects
     @property
     def teamleaders(self):
-        return [c for c in self.all if c.number[2:] == '01']
+        return sorted([c for c in self.all if c.number[2:] == '01'], key=lambda c: c.team)
 
     @property
     def teams(self):
