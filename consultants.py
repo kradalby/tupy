@@ -55,6 +55,14 @@ class Consultants:
             if teamleader.team == str(team_number):
                 return teamleader
 
+    def get_consultant(self, consultant_number):
+        for consultant in self.all:
+            if consultant.number == str(consultant_number):
+                return consultant
+
+    def get_email(self, consultant_number):
+        return self.get_consultant(consultant_number).email
+
 class Consultant:
     def __init__(self,
         long_unique_TW_number=None,
