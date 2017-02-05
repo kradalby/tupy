@@ -8,6 +8,6 @@ setup(
     description='tupy',
     author='Kristoffer Dalby',
     author_email='kradalby@kradalby.no',
-    packages=find_packages(),
+    packages=['.'],
     test_suite='tests',
 )
