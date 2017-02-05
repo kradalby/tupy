@@ -3,10 +3,15 @@ import os
 
 PATH = os.path.dirname(os.path.abspath(__file__))
 
+def find_config():
+    for loc in os.curdir, os.path.expanduser("~/.tupy"), "/etc/tupy", os.environ.get("TUPY_CONF"):
+        if os.path.isfile(os.path.join(loc,"config.ini")):
+            return os.path.join(loc,"config.ini")
+
 class Consultants:
     def __init__(self):
         config = configparser.ConfigParser()
-        config.read(os.path.join(PATH, 'config.ini'))
+        config.read(find_config())
         self.all = self.parse_consultant_file(config['path']['consultants'])
 
     def parse_consultant_file(self, path):
